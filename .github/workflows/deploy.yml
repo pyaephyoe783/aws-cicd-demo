@@ -20,9 +20,9 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             sudo apt update -y
-            sudo apt install nginx -y
+            sudo apt install git nginx -y
             
-      
+            # EC2 ထဲသို့ GitHub မှ Code အသစ်များကို Pull ဆွဲခြင်း
             if [ -d "aws-cicd-demo" ]; then
               cd aws-cicd-demo && git pull origin main
             else
@@ -30,10 +30,6 @@ jobs:
               cd aws-cicd-demo
             fi
 
-      
+            # index.html ကို Nginx folder ထဲသို့ ကူးထည့်ခြင်း
             sudo cp -f index.html /var/www/html/index.html
             sudo systemctl reload nginx
-
-
-
-            
