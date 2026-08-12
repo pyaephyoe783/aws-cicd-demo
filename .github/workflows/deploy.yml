@@ -17,7 +17,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1 # မိမိ EC2 တည်ရှိသော AWS Region နာမည် ပြောင်းပါ (ဥပမာ- ap-southeast-1)
+          aws-region: us-east-1 # မိမိ EC2 တည်ရှိသော Region အတိအကျ ပေးပါ
 
       - name: Deploy via AWS Systems Manager (SSM)
         run: |
@@ -25,15 +25,11 @@ jobs:
             --instance-ids "${{ secrets.EC2_INSTANCE_ID }}" \
             --document-name "AWS-RunShellScript" \
             --parameters 'commands=[
-              "sudo apt update -y",
-              "sudo apt install git nginx -y",
-              "if [ -d \"aws-cicd-demo\" ]; then cd aws-cicd-demo && sudo git pull origin main; else sudo git clone https://github.com/pyaephyoe783/aws-cicd-demo.git; fi",
-              "sudo cp -f /home/ubuntu/aws-cicd-demo/index.html /var/www/html/index.html || sudo cp -f aws-cicd-demo/index.html /var/www/html/index.html",
+              "sudo git config --global --add safe.directory *",
+              "if [ ! -d \"/home/ubuntu/aws-cicd-demo\" ]; then sudo git clone https://github.com/YOUR_USERNAME/aws-cicd-demo.git /home/ubuntu/aws-cicd-demo; fi",
+              "cd /home/ubuntu/aws-cicd-demo",
+              "sudo git fetch --all",
+              "sudo git reset --hard origin/main",
+              "sudo cp -f index.html /var/www/html/index.html",
               "sudo systemctl restart nginx"
             ]'
-
-
-
-
-
-            
