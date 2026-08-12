@@ -8,24 +8,28 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-    - name: Deploy to EC2 via SSH
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.EC2_PUBLIC_IP }}
-        username: ubuntu
-        key: ${{ secrets.EC2_SSH_KEY }}
-        script: |
-          sudo apt update -y
-          sudo apt install nginx -y
-          sudo systemctl start nginx
-          sudo systemctl enable nginx
-          sudo cp -f ${{ github.workspace }}/index.html /var/www/html/index.html || echo "Hello World! CI/CD Pipeline Working! 🚀" | sudo tee /var/www/html/index.html
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_PUBLIC_IP }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            sudo apt update -y
+            sudo apt install nginx -y
+            
+      
+            if [ -d "aws-cicd-demo" ]; then
+              cd aws-cicd-demo && git pull origin main
+            else
+              git clone https://github.com/pyaephyoe783/aws-cicd-demo.git
+              cd aws-cicd-demo
+            fi
 
-
-
-          
+      
+            sudo cp -f index.html /var/www/html/index.html
+            sudo systemctl reload nginx
