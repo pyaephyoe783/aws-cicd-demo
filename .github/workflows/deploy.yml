@@ -31,3 +31,9 @@ jobs:
               "sudo cp -f /home/ubuntu/aws-cicd-demo/index.html /var/www/html/index.html || sudo cp -f aws-cicd-demo/index.html /var/www/html/index.html",
               "sudo systemctl restart nginx"
             ]'
+
+
+
+
+
+            
