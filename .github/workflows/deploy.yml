@@ -22,14 +22,12 @@ jobs:
             sudo apt update -y
             sudo apt install git nginx -y
             
-            # EC2 ထဲသို့ GitHub မှ Code အသစ်များကို Pull ဆွဲခြင်း
             if [ -d "aws-cicd-demo" ]; then
-              cd aws-cicd-demo && git pull origin main
+              cd aws-cicd-demo && sudo git pull origin main
             else
-              git clone https://github.com/pyaephyoe783/aws-cicd-demo.git
+              sudo git clone https://github.com/pyaephyoe783/aws-cicd-demo.git
               cd aws-cicd-demo
             fi
 
-            # index.html ကို Nginx folder ထဲသို့ ကူးထည့်ခြင်း
             sudo cp -f index.html /var/www/html/index.html
-            sudo systemctl reload nginx
+            sudo systemctl restart nginx
