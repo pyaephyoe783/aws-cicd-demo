@@ -33,3 +33,7 @@ jobs:
       
             sudo cp -f index.html /var/www/html/index.html
             sudo systemctl reload nginx
+
+
+
+            
