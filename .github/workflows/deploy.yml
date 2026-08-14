@@ -37,3 +37,10 @@ jobs:
               "git reset --hard origin/main",
               "sudo cp -f index.html /var/www/html/index.html"
             ]'
+
+
+
+
+
+
+            
