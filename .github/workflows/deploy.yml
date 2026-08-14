@@ -4,7 +4,6 @@ on:
   push:
     branches: [ "main" ]
 
-# 1. OIDC Token ရယူရန် Permission ပေးရမည်
 permissions:
   id-token: write
   contents: read
@@ -16,31 +15,25 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # 2. Access Keys များ အစား OIDC Role ARN ကို သုံးသည်
       - name: Configure AWS Credentials via OIDC
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::123456789012:role/GitHubActions-SSM-OIDC-Role   # မိမိ IAM Role ARN ပြောင်းပါ
-          aws-region: ap-southeast-1
+          # 1. AWS Account ID အစစ် 227220817151 ကို ပြောင်းထားပါသည်
+          role-to-assume: arn:aws:iam::227220817151:role/GitHubActions-SSM-OIDC-Role
+          # 2. Screenshot 105 အရ Region ကို us-east-1 သို့ ပြောင်းထားပါသည်
+          aws-region: us-east-1
 
       - name: Execute Deployment via SSM
         run: |
           aws ssm send-command \
-            --instance-ids "YOUR_EC2_INSTANCE_ID" \
+            --instance-ids "i-0b3d35482afeb998d" \
             --document-name "AWS-RunShellScript" \
             --parameters commands='[
               "mkdir -p /home/ubuntu/aws-cicd-demo",
               "cd /home/ubuntu/aws-cicd-demo",
               "git config --global --add safe.directory *",
-              "if [ ! -d .git ]; then git init && git remote add origin https://github.com/YOUR_USERNAME/aws-cicd-demo.git; fi",
+              "if [ ! -d .git ]; then git init && git remote add origin https://github.com/pyaephyoe783/aws-cicd-demo.git; fi",
               "git fetch origin main",
               "git reset --hard origin/main",
               "sudo cp -f index.html /var/www/html/index.html"
             ]'
-
-
-
-
-
-
-            
