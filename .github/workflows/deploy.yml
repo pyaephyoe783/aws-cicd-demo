@@ -18,9 +18,7 @@ jobs:
       - name: Configure AWS Credentials via OIDC
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          # 1. AWS Account ID အစစ် 227220817151 ကို ပြောင်းထားပါသည်
-          role-to-assume: arn:aws:iam::227220817151:role/GitHubActions-SSM-OIDC-Role
-          # 2. Screenshot 105 အရ Region ကို us-east-1 သို့ ပြောင်းထားပါသည်
+          role-to-assume: arn:aws:iam::227220817151:role/GitHubActions-OIDC-Role-New
           aws-region: us-east-1
 
       - name: Execute Deployment via SSM
@@ -37,5 +35,8 @@ jobs:
               "git reset --hard origin/main",
               "sudo cp -f index.html /var/www/html/index.html"
             ]'
+
+
+
 
             
